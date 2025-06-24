@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meus Filmes Favoritos ⭐</title>
+  <style>
+    /* Estilos do site */
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #fffafc;
+      color: #333;
+      max-width: 600px;
+      margin: auto;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      color: #d63384;
+    }
+    .entrada {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+    input {
+      flex: 1;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+    .estrelas-input span {
+      font-size: 24px;
+      color: #ccc;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+    .estrelas-input span:hover,
+    .estrelas-input span.hovered,
+    .estrelas-input span.selecionada {
+      color: gold;
+    }
+    button {
+      background-color: #d63384;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 15px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #b92c6f;
+    }
+    #lista .filme {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #ccc;
+      padding: 8px 0;
+      border: 2px dashed #d63384; /* contorno rosa estilo diário */
+      border-radius: 10px;         /* bordas arredondadas */
+      background-color: #fff0f7;   /* fundo clarinho rosado */
+    }
+    .filme .nome {
+      flex: 1;
+    }
+    .filme .estrelas span {
+      font-size: 20px;
+      color: gold;
+      margin-left: 5px;
+    }
+    .remover-btn {
+      background: none;
+      color: #d63384;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    .remover-btn:hover {
+      color: #a81e63;
+    }
+  </style>
+</head>
+<body>
+  <h1>🎬 Meus Filmes Favoritos</h1>
+
+  <!-- Campo para digitar o filme + estrelinhas + botão -->
+  <div class="entrada">
+    <input type="text" id="titulo" placeholder="Nome do filme">
+    <div class="estrelas-input" id="avaliacao">
+      <span data-estrela="1">★</span>
+      <span data-estrela="2">★</span>
+      <span data-estrela="3">★</span>
+      <span data-estrela="4">★</span>
+      <span data-estrela="5">★</span>
+    </div>
+    <button onclick="adicionarFilme()">Adicionar</button>
+  </div>
+
+  <!-- Lista onde os filmes aparecem -->
+  <div id="lista"></div>
+
+  <script>
+    // Pega os filmes salvos ou começa com lista vazia
+    let filmes = JSON.parse(localStorage.getItem('filmesFavoritos')) || [];
+
+    // Guarda a nota clicada (de 1 a 5)
+    let notaSelecionada = 0;
+
+    // Seleciona todas as estrelinhas da avaliação
+    const estrelas = document.querySelectorAll('#avaliacao span');
+
+    // Para cada estrela, adiciona os eventos
+    estrelas.forEach((estrela, index) => {
+
+      // Quando passa o mouse por cima, destaca até a estrela atual
+      estrela.addEventListener('mouseover', () => {
+        estrelas.forEach((e, i) => e.classList.toggle('hovered', i <= index));
+      });
+
+      // Quando tira o mouse, remove o destaque
+      estrela.addEventListener('mouseout', () => {
+        estrelas.forEach(e => e.classList.remove('hovered'));
+      });
+
+      // Quando clica, define a nota e pinta as estrelas
+      estrela.addEventListener('click', () => {
+        notaSelecionada = index + 1;
+        estrelas.forEach((e, i) => {
+          e.classList.toggle('selecionada', i < notaSelecionada);
+        });
+      });
+    });
+
+    // Salva os filmes no localStorage (como texto JSON)
+    function salvarFilmes() {
+      localStorage.setItem('filmesFavoritos', JSON.stringify(filmes));
+    }
+
+    // Mostra todos os filmes na tela
+    function mostrarFilmes() {
+      const lista = document.getElementById('lista');
+      lista.innerHTML = ''; // Limpa lista antiga
+
+      // Para cada filme da lista, cria os elementos e coloca na tela
+      filmes.forEach((filme, index) => {
+        const div = document.createElement('div');
+        div.className = 'filme';
+
+        // HTML com nome, estrelas e botão apagar
+        div.innerHTML = `
+          <div class="nome">${filme.titulo}</div>
+          <div class="estrelas">${'★'.repeat(filme.nota)}</div>
+          <button class="remover-btn" onclick="removerFilme(${index})">🗑</button>
+        `;
+
+        lista.appendChild(div);
+      });
+    }
+
+    // Adiciona novo filme à lista
+    function adicionarFilme() {
+      const titulo = document.getElementById('titulo').value.trim();
+
+      // Só adiciona se o nome estiver preenchido e uma nota foi clicada
+      if (titulo && notaSelecionada > 0) {
+        filmes.push({ titulo, nota: notaSelecionada }); // Adiciona
+        salvarFilmes();      // Salva no localStorage
+        mostrarFilmes();     // Atualiza a tela
+
+        // Limpa os campos
+        document.getElementById('titulo').value = '';
+        notaSelecionada = 0;
+        estrelas.forEach(e => e.classList.remove('selecionada'));
+      }
+    }
+
+    // Remove filme da lista
+    function removerFilme(index) {
+      filmes.splice(index, 1); // Remove 1 filme na posição index
+      salvarFilmes();          // Salva a nova lista
+      mostrarFilmes();         // Atualiza tela
+    }
+
+    // Ao abrir o site, exibe os filmes já salvos
+    mostrarFilmes();
+  </script>
+</body>
+</html>
