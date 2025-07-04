@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Meus Filmes Favoritos ⭐</title>
   <style>
-    /* Estilos do site */
     body {
       font-family: 'Segoe UI', sans-serif;
       background: #fffafc;
@@ -58,9 +57,9 @@
       justify-content: space-between;
       border-bottom: 1px solid #ccc;
       padding: 8px 0;
-      border: 2px dashed #d63384; /* contorno rosa estilo diário */
-      border-radius: 10px;         /* bordas arredondadas */
-      background-color: #fff0f7;   /* fundo clarinho rosado */
+      border: 2px dashed #d63384;
+      border-radius: 10px;
+      background-color: #fff0f7;
     }
     .filme .nome {
       flex: 1;
@@ -85,7 +84,6 @@
 <body>
   <h1>🎬 Meus Filmes Favoritos</h1>
 
-  <!-- Campo para digitar o filme + estrelinhas + botão -->
   <div class="entrada">
     <input type="text" id="titulo" placeholder="Nome do filme">
     <div class="estrelas-input" id="avaliacao">
@@ -95,36 +93,29 @@
       <span data-estrela="4">★</span>
       <span data-estrela="5">★</span>
     </div>
-    <button onclick="adicionarFilme()">Adicionar</button>
+    <button id="botaoAdicionar">Adicionar</button>
   </div>
 
-  <!-- Lista onde os filmes aparecem -->
   <div id="lista"></div>
 
   <script>
-    // Pega os filmes salvos ou começa com lista vazia
     let filmes = JSON.parse(localStorage.getItem('filmesFavoritos')) || [];
-
-    // Guarda a nota clicada (de 1 a 5)
     let notaSelecionada = 0;
 
-    // Seleciona todas as estrelinhas da avaliação
     const estrelas = document.querySelectorAll('#avaliacao span');
 
-    // Para cada estrela, adiciona os eventos
+    //ADDEVENTLISTENER Nº1 - ouvinte de evento que faz as estrelas ficarem amarelas quando o mouse passar por cima
     estrelas.forEach((estrela, index) => {
-
-      // Quando passa o mouse por cima, destaca até a estrela atual
       estrela.addEventListener('mouseover', () => {
         estrelas.forEach((e, i) => e.classList.toggle('hovered', i <= index));
       });
 
-      // Quando tira o mouse, remove o destaque
+      //ADDEVENTLISTENER Nº2 - ouvinte de evento que fazas estrelas voltarem a cor original quando o mouse sair de cima 
       estrela.addEventListener('mouseout', () => {
         estrelas.forEach(e => e.classList.remove('hovered'));
       });
 
-      // Quando clica, define a nota e pinta as estrelas
+      //ADDEVENTLISTENER Nº3 - ouvinte de evento que faz as estrelas serem "selecionadas" quando clicamos sob elas
       estrela.addEventListener('click', () => {
         notaSelecionada = index + 1;
         estrelas.forEach((e, i) => {
@@ -133,57 +124,66 @@
       });
     });
 
-    // Salva os filmes no localStorage (como texto JSON)
     function salvarFilmes() {
       localStorage.setItem('filmesFavoritos', JSON.stringify(filmes));
     }
 
-    // Mostra todos os filmes na tela
     function mostrarFilmes() {
       const lista = document.getElementById('lista');
-      lista.innerHTML = ''; // Limpa lista antiga
+      lista.innerHTML = '';
 
-      // Para cada filme da lista, cria os elementos e coloca na tela
       filmes.forEach((filme, index) => {
         const div = document.createElement('div');
         div.className = 'filme';
 
-        // HTML com nome, estrelas e botão apagar
-        div.innerHTML = `
-          <div class="nome">${filme.titulo}</div>
-          <div class="estrelas">${'★'.repeat(filme.nota)}</div>
-          <button class="remover-btn" onclick="removerFilme(${index})">🗑</button>
-        `;
+        const nome = document.createElement('div');
+        nome.className = 'nome';
+        nome.textContent = filme.titulo;
+
+        const estrelasDiv = document.createElement('div');
+        estrelasDiv.className = 'estrelas';
+        estrelasDiv.innerHTML = '★'.repeat(filme.nota);
+
+        const botaoRemover = document.createElement('button');
+        botaoRemover.className = 'remover-btn';
+        botaoRemover.textContent = '🗑';
+        //ADDEVENTLISTENER Nº4 - ouvinte de evento que exclui o filme caso seja clicado no botaoRemover
+        botaoRemover.addEventListener('click', () => {
+          removerFilme(index);
+        });
+
+        div.appendChild(nome);
+        div.appendChild(estrelasDiv);
+        div.appendChild(botaoRemover);
 
         lista.appendChild(div);
       });
     }
 
-    // Adiciona novo filme à lista
     function adicionarFilme() {
       const titulo = document.getElementById('titulo').value.trim();
 
-      // Só adiciona se o nome estiver preenchido e uma nota foi clicada
       if (titulo && notaSelecionada > 0) {
-        filmes.push({ titulo, nota: notaSelecionada }); // Adiciona
-        salvarFilmes();      // Salva no localStorage
-        mostrarFilmes();     // Atualiza a tela
+        filmes.push({ titulo, nota: notaSelecionada });
+        salvarFilmes();
+        mostrarFilmes();
 
-        // Limpa os campos
         document.getElementById('titulo').value = '';
         notaSelecionada = 0;
         estrelas.forEach(e => e.classList.remove('selecionada'));
       }
     }
 
-    // Remove filme da lista
     function removerFilme(index) {
-      filmes.splice(index, 1); // Remove 1 filme na posição index
-      salvarFilmes();          // Salva a nova lista
-      mostrarFilmes();         // Atualiza tela
+      filmes.splice(index, 1);
+      salvarFilmes();
+      mostrarFilmes();
     }
 
-    // Ao abrir o site, exibe os filmes já salvos
+    // ADDEVENTLISTENER Nº5 - ouvinte de evento que adiciona um novo filme à lista quando o botão "Adicionar" é clicado
+    document.getElementById('botaoAdicionar').addEventListener('click', adicionarFilme);
+
+    // Exibe os filmes salvos ao carregar
     mostrarFilmes();
   </script>
 </body>
