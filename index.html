@@ -1,189 +1,248 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Meus Filmes Favoritos ⭐</title>
+  <meta charset="UTF-8"><!-- Define a codificação de caracteres da página como UTF-8 -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"><!-- Garante que o site seja responsivo em dispositivos móveis -->
+  <title>Meus Filmes Favoritos ⭐</title><!-- Título da aba do navegador -->
   <style>
+    /* Estilos visuais do site */
     body {
-      font-family: 'Segoe UI', sans-serif;
-      background: #fffafc;
-      color: #333;
-      max-width: 600px;
-      margin: auto;
-      padding: 20px;
+      font-family: 'Segoe UI', sans-serif; /* Fonte principal */
+      background: #fffafc; /* Cor de fundo suave */
+      color: #333; /* Cor do texto */
+      max-width: 600px; /* Largura máxima da página para melhor leitura */
+      margin: auto; /* Centraliza horizontalmente */
+      padding: 20px; /* Espaçamento interno */
     }
     h1 {
-      text-align: center;
-      color: #d63384;
+      text-align: center; /* Centraliza o título */
+      color: #d63384; /* Cor rosa vibrante */
     }
     .entrada {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 15px;
+      display: flex; /* Exibe os elementos em linha */
+      align-items: center; /* Alinha verticalmente */
+      gap: 10px; /* Espaço entre os elementos */
+      margin-bottom: 15px; /* Espaço abaixo */
     }
     input {
-      flex: 1;
-      padding: 10px;
-      border-radius: 8px;
-      border: 1px solid #ccc;
+      flex: 1; /* O input ocupa o máximo espaço disponível */
+      padding: 10px; /* Espaçamento interno */
+      border-radius: 8px; /* Bordas arredondadas */
+      border: 1px solid #ccc; /* Borda cinza clara */
     }
+    /* Estilos das estrelas para avaliação */
     .estrelas-input span {
-      font-size: 24px;
-      color: #ccc;
-      cursor: pointer;
-      transition: color 0.2s;
+      font-size: 24px; /* Tamanho maior para as estrelas */
+      color: #ccc; /* Cor cinza clara inicialmente */
+      cursor: pointer; /* Cursor muda para indicar que é clicável */
+      transition: color 0.2s; /* Transição suave de cor */
     }
+    /* Cores das estrelas quando o mouse passa ou estão selecionadas */
     .estrelas-input span:hover,
     .estrelas-input span.hovered,
     .estrelas-input span.selecionada {
-      color: gold;
+      color: gold; /* Cor dourada */
     }
+    /* Estilo dos botões */
     button {
-      background-color: #d63384;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      padding: 10px 15px;
-      cursor: pointer;
+      background-color: #d63384; /* Cor rosa */
+      color: white; /* Texto branco */
+      border: none; /* Sem borda */
+      border-radius: 8px; /* Bordas arredondadas */
+      padding: 10px 15px; /* Espaçamento interno */
+      cursor: pointer; /* Cursor indicador de clique */
     }
     button:hover {
-      background-color: #b92c6f;
+      background-color: #b92c6f; /* Cor rosa mais escura ao passar o mouse */
     }
+    /* Estilos da lista de filmes */
     #lista .filme {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      border-bottom: 1px solid #ccc;
-      padding: 8px 0;
-      border: 2px dashed #d63384;
-      border-radius: 10px;
-      background-color: #fff0f7;
+      display: flex; /* Exibe elementos em linha */
+      align-items: center; /* Alinha verticalmente */
+      justify-content: space-between; /* Espaça entre elementos */
+      border-bottom: 1px solid #ccc; /* Linha de separação */
+      padding: 8px 0; /* Espaçamento vertical */
+      border: 2px dashed #d63384; /* Borda rosa tracejada */
+      border-radius: 10px; /* Bordas arredondadas */
+      background-color: #fff0f7; /* Fundo rosa claro */
     }
     .filme .nome {
-      flex: 1;
+      flex: 1; /* O nome ocupa o máximo espaço */
     }
     .filme .estrelas span {
-      font-size: 20px;
-      color: gold;
-      margin-left: 5px;
+      font-size: 20px; /* Tamanho das estrelas nos filmes */
+      color: gold; /* Cor dourada */
+      margin-left: 5px; /* Espaço entre estrelas */
     }
+    /* Botão de remover filme */
     .remover-btn {
-      background: none;
-      color: #d63384;
-      border: none;
-      cursor: pointer;
-      font-size: 16px;
+      background: none; /* Sem fundo */
+      color: #d63384; /* Cor rosa */
+      border: none; /* Sem borda */
+      cursor: pointer; /* Cursor de clique */
+      font-size: 16px; /* Tamanho da fonte */
     }
     .remover-btn:hover {
-      color: #a81e63;
+      color: #a81e63; /* Rosa mais escuro ao passar o mouse */
     }
   </style>
 </head>
 <body>
   <h1>🎬 Meus Filmes Favoritos</h1>
 
+  <!-- Área para entrada do nome do filme, seleção de estrelas e botão adicionar -->
   <div class="entrada">
-    <input type="text" id="titulo" placeholder="Nome do filme">
-    <div class="estrelas-input" id="avaliacao">
-      <span data-estrela="1">★</span>
+    <input type="text" id="titulo" placeholder="Nome do filme"><!-- Campo para digitar o título do filme -->
+    <div class="estrelas-input" id="avaliacao"><!-- Área das estrelas para avaliação -->
+      <span data-estrela="1">★</span><!-- Cada estrela tem um valor associado -->
       <span data-estrela="2">★</span>
       <span data-estrela="3">★</span>
       <span data-estrela="4">★</span>
       <span data-estrela="5">★</span>
     </div>
-    <button id="botaoAdicionar">Adicionar</button>
+    <button id="botaoAdicionar">Adicionar</button><!-- Botão para adicionar o filme à lista -->
   </div>
 
-  <div id="lista"></div>
+  <div id="lista"></div><!-- Local onde os filmes adicionados serão exibidos -->
+
+  <!-- Botão e texto para o contador de cliques -->
+  <div>
+    <button id="botaoContador">Clique aqui</button>
+    <p id="contador">Você clicou 0 vezes aqui</p><!-- Texto que mostra o número de cliques -->
+  </div>
 
   <script>
+    // Recupera a lista de filmes do localStorage e converte de JSON para array, ou cria um array vazio se não existir
     let filmes = JSON.parse(localStorage.getItem('filmesFavoritos')) || [];
-    let notaSelecionada = 0;
 
+    let notaSelecionada = 0; // Variável que armazena a nota (quantidade de estrelas) selecionada pelo usuário
+
+    // Tenta recuperar o número de cliques salvos no localStorage para o contador
+    let contador = localStorage.getItem('contadorCliques');
+
+    // Se não houver valor salvo, inicia o contador com zero
+    if (!contador) {
+      contador = 0;
+    } else {
+      // Como o localStorage guarda tudo como texto, converte a string para número
+      contador = Number(contador);
+    }
+
+    // Atualiza o texto do parágrafo que mostra quantos cliques já foram feitos, usando o valor recuperado
+    document.getElementById("contador").textContent = "Você clicou " + contador + " vezes aqui";
+
+    // Seleciona todos os elementos span dentro da div com id 'avaliacao' (as estrelas)
     const estrelas = document.querySelectorAll('#avaliacao span');
 
-    //ADDEVENTLISTENER Nº1 - ouvinte de evento que faz as estrelas ficarem amarelas quando o mouse passar por cima
+    /* ADDEVENTLISTENER Nº1:
+       Para cada estrela, adiciona um evento de mouseover que pinta as estrelas até a que o mouse estiver passando,
+       dando um feedback visual para o usuário */
     estrelas.forEach((estrela, index) => {
       estrela.addEventListener('mouseover', () => {
+        // Para cada estrela, adiciona ou remove a classe 'hovered' para deixar dourada até a estrela atual
         estrelas.forEach((e, i) => e.classList.toggle('hovered', i <= index));
       });
 
-      //ADDEVENTLISTENER Nº2 - ouvinte de evento que fazas estrelas voltarem a cor original quando o mouse sair de cima 
+      /* ADDEVENTLISTENER Nº2:
+         Quando o mouse sai de cima da estrela, remove a cor dourada (classe 'hovered') */
       estrela.addEventListener('mouseout', () => {
         estrelas.forEach(e => e.classList.remove('hovered'));
       });
 
-      //ADDEVENTLISTENER Nº3 - ouvinte de evento que faz as estrelas serem "selecionadas" quando clicamos sob elas
+      /* ADDEVENTLISTENER Nº3:
+         Quando uma estrela é clicada, marca essa e todas as anteriores como selecionadas,
+         e armazena a nota selecionada para salvar junto com o filme */
       estrela.addEventListener('click', () => {
-        notaSelecionada = index + 1;
+        notaSelecionada = index + 1; // As estrelas são contadas de 1 a 5, índice começa em 0, por isso o +1
         estrelas.forEach((e, i) => {
-          e.classList.toggle('selecionada', i < notaSelecionada);
+          e.classList.toggle('selecionada', i < notaSelecionada); // Aplica ou remove a classe selecionada para pintar as estrelas
         });
       });
     });
 
+    // Função para salvar a lista de filmes no localStorage, convertendo o array para JSON
     function salvarFilmes() {
       localStorage.setItem('filmesFavoritos', JSON.stringify(filmes));
     }
 
+    // Função que incrementa o contador de cliques, atualiza o texto e salva o novo valor no localStorage
+    function contarClicks() {
+      contador++; // Soma 1 ao contador
+      document.getElementById("contador").textContent = "Você clicou " + contador + " vezes aqui"; // Atualiza o texto no HTML
+      localStorage.setItem('contadorCliques', contador); // Salva o novo valor no localStorage
+    }
+
+    // Liga o botão do contador ao evento de clique para executar a função contarClicks quando clicado
+    document.getElementById("botaoContador").addEventListener("click", contarClicks);
+
+    // Função que exibe a lista de filmes na tela, criando elementos HTML dinamicamente
     function mostrarFilmes() {
-      const lista = document.getElementById('lista');
-      lista.innerHTML = '';
+      const lista = document.getElementById('lista'); // Pega o elemento onde os filmes serão mostrados
+      lista.innerHTML = ''; // Limpa o conteúdo antes de mostrar (para evitar duplicação)
 
+      // Para cada filme salvo no array, cria uma linha na lista
       filmes.forEach((filme, index) => {
-        const div = document.createElement('div');
-        div.className = 'filme';
+        const div = document.createElement('div'); // Cria uma div para o filme
+        div.className = 'filme'; // Define a classe para estilização
 
-        const nome = document.createElement('div');
-        nome.className = 'nome';
-        nome.textContent = filme.titulo;
+        const nome = document.createElement('div'); // Cria div para o nome do filme
+        nome.className = 'nome'; // Classe para estilização
+        nome.textContent = filme.titulo; // Define o texto com o título do filme
 
-        const estrelasDiv = document.createElement('div');
-        estrelasDiv.className = 'estrelas';
-        estrelasDiv.innerHTML = '★'.repeat(filme.nota);
+        const estrelasDiv = document.createElement('div'); // Cria div para as estrelas
+        estrelasDiv.className = 'estrelas'; // Classe para estilização
+        estrelasDiv.innerHTML = '★'.repeat(filme.nota); // Insere o número de estrelas baseado na nota do filme
 
-        const botaoRemover = document.createElement('button');
-        botaoRemover.className = 'remover-btn';
-        botaoRemover.textContent = '🗑';
-        //ADDEVENTLISTENER Nº4 - ouvinte de evento que exclui o filme caso seja clicado no botaoRemover
+        const botaoRemover = document.createElement('button'); // Cria botão para remover o filme
+        botaoRemover.className = 'remover-btn'; // Classe para estilização
+        botaoRemover.textContent = '🗑'; // Ícone de lixeira
+
+        /* ADDEVENTLISTENER Nº4:
+           Quando clicar no botão remover, chama a função removerFilme passando o índice para excluir o filme certo */
         botaoRemover.addEventListener('click', () => {
           removerFilme(index);
         });
 
+        // Adiciona o nome, as estrelas e o botão remover dentro da div principal do filme
         div.appendChild(nome);
         div.appendChild(estrelasDiv);
         div.appendChild(botaoRemover);
 
+        // Adiciona a div do filme na lista principal da página
         lista.appendChild(div);
       });
     }
 
+    // Função que adiciona um novo filme ao array, salva e mostra na tela
     function adicionarFilme() {
-      const titulo = document.getElementById('titulo').value.trim();
+      const titulo = document.getElementById('titulo').value.trim(); // Pega o texto digitado e remove espaços extras
 
+      // Só adiciona se tiver um título e se uma nota foi selecionada
       if (titulo && notaSelecionada > 0) {
-        filmes.push({ titulo, nota: notaSelecionada });
-        salvarFilmes();
-        mostrarFilmes();
+        filmes.push({ titulo, nota: notaSelecionada }); // Adiciona objeto filme ao array
+        salvarFilmes(); // Salva no localStorage
+        mostrarFilmes(); // Atualiza a lista na tela
 
+        // Limpa o input e reseta a nota selecionada para zero
         document.getElementById('titulo').value = '';
         notaSelecionada = 0;
+        // Remove a seleção das estrelas (para o usuário começar do zero de novo)
         estrelas.forEach(e => e.classList.remove('selecionada'));
       }
     }
 
+    // Função para remover um filme da lista pelo índice
     function removerFilme(index) {
-      filmes.splice(index, 1);
-      salvarFilmes();
-      mostrarFilmes();
+      filmes.splice(index, 1); // Remove o filme do array
+      salvarFilmes(); // Atualiza o localStorage
+      mostrarFilmes(); // Atualiza a lista na tela
     }
 
-    // ADDEVENTLISTENER Nº5 - ouvinte de evento que adiciona um novo filme à lista quando o botão "Adicionar" é clicado
+    /* ADDEVENTLISTENER Nº5:
+       Quando o botão "Adicionar" é clicado, executa a função adicionarFilme para incluir o filme */
     document.getElementById('botaoAdicionar').addEventListener('click', adicionarFilme);
 
-    // Exibe os filmes salvos ao carregar
+    // Quando a página carrega, mostra os filmes salvos (se houver)
     mostrarFilmes();
   </script>
 </body>
