@@ -120,7 +120,12 @@
   </div>
 
   <div id="lista"></div><!-- Local onde os filmes adicionados serão exibidos -->
+  
+  <br>
+  
+  <button id="limparTudo">🧹 Limpar tudo</button>
 
+  <br>
   <br>
 
   <!-- Botão e texto para o contador de cliques -->
@@ -195,8 +200,29 @@
       localStorage.setItem('contadorCliques', contador); // Salva o novo valor no localStorage
     }
 
+    //função que envia mensagem quando clicar no botao
+    function mensagem() {
+
+      // Cria um novo parágrafo
+      const paragrafo = document.createElement('p');
+
+      // Define o texto que ele vai mostrar
+      paragrafo.textContent = "Você está interagindo com o contador!";
+
+      // Adiciona esse parágrafo logo abaixo do botão
+      document.body.appendChild(paragrafo);
+
+      // Aguarda 0,5 segundos (500 milissegundos) e remove a mensagem
+      setTimeout(() => {
+        paragrafo.remove(); // Remove o elemento da página
+      }, 500);
+    }
+
     // Liga o botão do contador ao evento de clique para executar a função contarClicks quando clicado
     document.getElementById("botaoContador").addEventListener("click", contarClicks);  
+
+    //mensagem dizendo que clicou no botao
+    document.getElementById("botaoContador").addEventListener("click", mensagem);
     
     function modoDark() {
       document.body.classList.toggle("dark");
@@ -231,6 +257,7 @@
         const botaoRemover = document.createElement('button'); // Cria botão para remover o filme
         botaoRemover.className = 'remover-btn'; // Classe para estilização
         botaoRemover.textContent = '🗑'; // Ícone de lixeira
+
 
         /* ADDEVENTLISTENER Nº4:
            Quando clicar no botão remover, chama a função removerFilme passando o índice para excluir o filme certo */
@@ -272,6 +299,17 @@
       salvarFilmes(); // Atualiza o localStorage
       mostrarFilmes(); // Atualiza a lista na tela
     }
+    
+    //função para remover todos os filmes de uma só ves
+    function removerTodosFilmes() {
+      filmes = []; // esvazia a lista
+      salvarFilmes(); // atualiza o localStorage
+      mostrarFilmes(); // limpa a tela
+    }
+
+    //liga o botao ao função limpar tudo
+    document.getElementById('limparTudo').addEventListener('click', removerTodosFilmes);
+
 
     /* ADDEVENTLISTENER Nº5:
        Quando o botão "Adicionar" é clicado, executa a função adicionarFilme para incluir o filme */
