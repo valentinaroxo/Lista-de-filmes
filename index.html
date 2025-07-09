@@ -85,6 +85,22 @@
     .remover-btn:hover {
       color: #a81e63; /* Rosa mais escuro ao passar o mouse */
     }
+    body.dark {
+      background-color: black;
+      color: white;
+    }
+
+    body.dark button {
+      background-color: #a8326f;
+      color: #eee;
+    }
+    body.dark .nome {
+      color: #333;
+    }
+    body.dark .estrelas{
+      color: rgb(255, 238, 0);
+    }
+
   </style>
 </head>
 <body>
@@ -105,11 +121,18 @@
 
   <div id="lista"></div><!-- Local onde os filmes adicionados serão exibidos -->
 
+  <br>
+
   <!-- Botão e texto para o contador de cliques -->
   <div>
     <button id="botaoContador">Clique aqui</button>
     <p id="contador">Você clicou 0 vezes aqui</p><!-- Texto que mostra o número de cliques -->
   </div>
+
+  <!-- Botão para ativar modo dark-->
+   <div>
+    <button id="modoDark">Modo dark</button>
+   </div>
 
   <script>
     // Recupera a lista de filmes do localStorage e converte de JSON para array, ou cria um array vazio se não existir
@@ -173,7 +196,19 @@
     }
 
     // Liga o botão do contador ao evento de clique para executar a função contarClicks quando clicado
-    document.getElementById("botaoContador").addEventListener("click", contarClicks);
+    document.getElementById("botaoContador").addEventListener("click", contarClicks);  
+    
+    function modoDark() {
+      document.body.classList.toggle("dark");
+      const btn = document.getElementById("modoDark");
+      if (document.body.classList.contains("dark")) {
+        btn.textContent = "Modo claro";
+      } else {
+        btn.textContent = "Modo dark";
+      }
+    }
+
+    document.getElementById("modoDark").addEventListener("click", modoDark);
 
     // Função que exibe a lista de filmes na tela, criando elementos HTML dinamicamente
     function mostrarFilmes() {
@@ -204,7 +239,7 @@
         });
 
         // Adiciona o nome, as estrelas e o botão remover dentro da div principal do filme
-        div.appendChild(nome);
+        div.appendChild( nome);
         div.appendChild(estrelasDiv);
         div.appendChild(botaoRemover);
 
