@@ -101,6 +101,33 @@
       color: rgb(255, 238, 0);
     }
 
+    body.tema {
+      background-color: rgb(138, 187, 171);
+      color: #ccc;
+    }
+    body.tema button {
+      background-color: darkcyan;
+      color: #ccc;
+    }
+    body.tema .nome{
+      color: #161616;
+    }
+
+    body.tema h1 {
+      color: rgb(0, 61, 61);
+    }
+    body.tema #lista .filme{
+      background-color: rgb(199, 231, 221);
+      display: flex; /* Exibe elementos em linha */
+      align-items: center; /* Alinha verticalmente */
+      justify-content: space-between; /* Espaça entre elementos */
+      border-bottom: 1px solid #ccc; /* Linha de separação */
+      padding: 8px 0; /* Espaçamento vertical */
+      border: 2px dashed rgb(0, 61, 61);
+      border-radius: 10px; /* Bordas arredondadas */
+    }
+
+
   </style>
 </head>
 <body>
@@ -138,6 +165,12 @@
    <div>
     <button id="modoDark">Modo dark</button>
    </div>
+
+   <br>
+  <!-- Botão para mudar o tema-->
+  <div>
+    <button id="mudarTema">Alterar tema</button>
+  </div>
 
   <script>
     // Recupera a lista de filmes do localStorage e converte de JSON para array, ou cria um array vazio se não existir
@@ -223,7 +256,7 @@
 
     //mensagem dizendo que clicou no botao
     document.getElementById("botaoContador").addEventListener("click", mensagem);
-    
+                             
     function modoDark() {
       document.body.classList.toggle("dark");
       const btn = document.getElementById("modoDark");
@@ -234,7 +267,16 @@
       }
     }
 
+    function mudarTema(){
+      document.body.classList.toggle("tema");
+      const btnn = document.getElementById("mudarTema");
+      localStorage.setItem('mudarTema', tema); //ISSO NAO TA DANDO CERTO, VALENTINA ARRUMA nao ta salvando no localStorage (mododark tb nao)
+    }
+
+
     document.getElementById("modoDark").addEventListener("click", modoDark);
+
+    document.getElementById("mudarTema").addEventListener("click", mudarTema);
 
     // Função que exibe a lista de filmes na tela, criando elementos HTML dinamicamente
     function mostrarFilmes() {
