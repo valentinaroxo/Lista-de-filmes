@@ -257,20 +257,25 @@
     //mensagem dizendo que clicou no botao
     document.getElementById("botaoContador").addEventListener("click", mensagem);
                              
-    function modoDark() {
-      document.body.classList.toggle("dark");
-      const btn = document.getElementById("modoDark");
-      if (document.body.classList.contains("dark")) {
-        btn.textContent = "Modo claro";
-      } else {
-        btn.textContent = "Modo dark";
-      }
+  function modoDark() {
+    document.body.classList.toggle("dark"); // Alterna o modo dark
+
+    // Atualiza o texto do botão com base na classe
+    const btn = document.getElementById("modoDark");
+    if (document.body.classList.contains("dark")) {
+      btn.textContent = "Modo claro";
+      localStorage.setItem('modoDarkAtivo', true); // Salva como "true"
+    } else {
+      btn.textContent = "Modo dark";
+      localStorage.setItem('modoDarkAtivo', false); // Salva como "false"
     }
+  }
+
 
     function mudarTema(){
-      document.body.classList.toggle("tema");
-      const btnn = document.getElementById("mudarTema");
-      localStorage.setItem('mudarTema', tema); //ISSO NAO TA DANDO CERTO, VALENTINA ARRUMA nao ta salvando no localStorage (mododark tb nao)
+      document.body.classList.toggle("tema"); // Alterna a classe 'tema'
+      const estaComTema = document.body.classList.contains("tema"); // Verifica se o tema está ativado
+      localStorage.setItem('temaAtivo', estaComTema); // Salva true ou false
     }
 
 
@@ -359,6 +364,18 @@
 
     // Quando a página carrega, mostra os filmes salvos (se houver)
     mostrarFilmes();
+
+    // Ao carregar a página, verifica se o tema estava ativado antes e aplica
+    if (localStorage.getItem("temaAtivo") === "true") {
+      document.body.classList.add("tema");
+    }
+
+    // Ao carregar a página, verifica se o modo dark estava ativado e aplica
+    if (localStorage.getItem("modoDarkAtivo") === "true") {
+      document.body.classList.add("dark");
+      document.getElementById("modoDark").textContent = "Modo claro";
+    }
+
   </script>
 </body>
 </html>
